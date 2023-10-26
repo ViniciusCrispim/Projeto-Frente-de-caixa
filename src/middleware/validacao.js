@@ -47,7 +47,7 @@ const validarProdutoId = async (req, res, next) => {
     if (!(await buscarProdutoPorId(id))) {
       return res
         .status(404)
-        .json({ mensagem: 'Não existe produto com o ID cadastrado' });
+        .json({ mensagem: 'Não existe produto com o ID informado' });
     }
     next();
   } catch (error) {

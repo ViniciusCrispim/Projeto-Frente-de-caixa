@@ -11,7 +11,11 @@ const atualizarProdutoDb = async (produto, id) =>
 
 const buscarProdutos = async () => await knex('produtos');
 
-const buscarProdutoPorId = async (id) => await knex('produtos').where({ id });
+const buscarProdutoPorId = async (id) =>
+  await knex('produtos').where({ id }).first();
+
+const excluirProduto = async (id) =>
+  await knex('produtos').where({ id }).delete();
 
 module.exports = {
   verificarIdCategoria,
@@ -19,4 +23,5 @@ module.exports = {
   buscarProdutos,
   buscarProdutoPorId,
   atualizarProdutoDb,
+  excluirProduto,
 };

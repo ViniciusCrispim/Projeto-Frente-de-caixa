@@ -3,6 +3,8 @@ const {
   cadastroProduto,
   listarProdutos,
   atualizarProduto,
+  deletarProduto,
+  detalharProduto,
 } = require('../controllers/produtos');
 const {
   validarProdutoId,
@@ -26,6 +28,10 @@ rotaProdutos.put(
   validarIdCategoria,
   atualizarProduto
 );
+
+rotaProdutos.get('/:id', validarProdutoId, detalharProduto);
+
+rotaProdutos.delete('/:id', validarProdutoId, deletarProduto);
 
 rotaProdutos.get('/', listarProdutos);
 

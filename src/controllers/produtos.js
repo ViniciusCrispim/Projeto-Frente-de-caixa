@@ -2,6 +2,8 @@ const {
   cadastrarProduto,
   buscarProdutos,
   atualizarProdutoDb,
+  excluirProduto,
+  buscarProdutoPorId,
 } = require('../repository/produtos');
 
 const cadastroProduto = async (req, res) => {
@@ -40,8 +42,36 @@ const listarProdutos = async (req, res) => {
   }
 };
 
+const deletarProduto = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const produtoExcluido = await excluirProduto(id);
+    if (!produtoExcluido) {
+      return res
+        .status(500)
+        .json({ mensagem: 'Erro ao excluir produto, repita a operação' });
+    }
+    return res.json({ mensagem: 'Produto excluído com sucesso' });
+  } catch (error) {
+    return res.status(500).json({ mensagem: error.message });
+  }
+};
+
+const detalharProduto = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const produtoDetalhado = await buscarProdutoPorId(id);
+
+    return res.json(produtoDetalhado);
+  } catch (error) {
+    return res.status(500).json({ mensagem: error.message });
+  }
+};
+
 module.exports = {
   cadastroProduto,
   listarProdutos,
   atualizarProduto,
+  deletarProduto,
+  detalharProduto,
 };
