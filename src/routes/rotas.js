@@ -12,6 +12,6 @@ rotas.use(rotaCategorias);
 rotas.use(rotaUsuarios);
 rotas.use(rotaLogin);
 rotas.use(autenticarAcesso);
-rotas.use(rotaProdutos);
+rotas.use('/produto', rotaProdutos);
 
 module.exports = rotas;

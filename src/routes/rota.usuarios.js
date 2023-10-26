@@ -9,18 +9,17 @@ const esquemaUsuario = require('../schemas/usuarios');
 const ctrl = require('../controllers/usuarios');
 const autenticarAcesso = require('../middleware/autenticacao');
 
-rotaUsuarios
-  .route('/usuario')
-  .post(
-    validarCorpoRequisicao(esquemaUsuario),
-    validarEmailCadastrado,
-    ctrl.cadastroUsuario
-  )
-  .get(autenticarAcesso, ctrl.detalharUsuario)
-  .put(
-    validarCorpoRequisicao(esquemaUsuario),
-    autenticarAcesso,
-    ctrl.atualizacaoUsuario
-  );
+rotaUsuarios.post(
+  '/',
+  validarCorpoRequisicao(esquemaUsuario),
+  validarEmailCadastrado,
+  ctrl.cadastroUsuario
+);
+rotaUsuarios.get(autenticarAcesso, ctrl.detalharUsuario);
+rotaUsuarios.put(
+  validarCorpoRequisicao(esquemaUsuario),
+  autenticarAcesso,
+  ctrl.atualizacaoUsuario
+);
 
 module.exports = rotaUsuarios;
