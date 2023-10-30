@@ -5,6 +5,7 @@ const rotaUsuarios = require('./rota.usuarios');
 const rotaLogin = require('./rota.login');
 const autenticarAcesso = require('../middleware/autenticacao');
 const rotaProdutos = require('./rota.produtos');
+const rotaClientes = require('./rota.clientes');
 
 const rotas = Router();
 
@@ -13,5 +14,6 @@ rotas.use(rotaUsuarios);
 rotas.use(rotaLogin);
 rotas.use(autenticarAcesso);
 rotas.use('/produto', rotaProdutos);
+rotas.use('/cliente', rotaClientes);
 
 module.exports = rotas;

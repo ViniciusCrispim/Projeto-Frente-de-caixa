@@ -1,4 +1,9 @@
 const {
+  validarCpfCliente,
+  validarEmailCliente,
+  validarIdCliente,
+} = require('../repository/clientes');
+const {
   buscarProdutoPorId,
   verificarIdCategoria,
 } = require('../repository/produtos');
@@ -55,9 +60,45 @@ const validarProdutoId = async (req, res, next) => {
   }
 };
 
+const validarEmailCpfCliente = async (req, res, next) => {
+  const { email, cpf } = req.body;
+  try {
+    if (await validarEmailCliente(email)) {
+      return res
+        .status(400)
+        .json({ mensagem: 'O email informado já está cadastrado no sistema' });
+    }
+    if (await validarCpfCliente(cpf)) {
+      return res
+        .status(400)
+        .json({ mensagem: 'O CPF informado já está cadastrado no sistema' });
+    }
+
+    next();
+  } catch (error) {
+    return res.status(500).json({ mensagem: error.message });
+  }
+};
+
+const validarClienteId = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    if (!(await validarIdCliente(id))) {
+      return res
+        .status(400)
+        .json({ mensagem: 'Não existe cliente com o Id informado' });
+    }
+    next();
+  } catch (error) {
+    res.status(500).json({ mensagem: error.message });
+  }
+};
+
 module.exports = {
   validarCorpoRequisicao,
   validarEmailCadastrado,
   validarProdutoId,
   validarIdCategoria,
+  validarEmailCpfCliente,
+  validarClienteId,
 };

@@ -22,7 +22,7 @@ const fazerLogin = async (req, res) => {
     };
 
     const token = await jwt.sign(usuarioLogado, process.env.JWT_PASS, {
-      expiresIn: '1h',
+      expiresIn: '1d',
     });
 
     res.usuario = usuarioLogado;

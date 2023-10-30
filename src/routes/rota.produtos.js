@@ -31,8 +31,8 @@ rotaProdutos.put(
 
 rotaProdutos.get('/:id', validarProdutoId, detalharProduto);
 
-rotaProdutos.delete('/:id', validarProdutoId, deletarProduto);
-
 rotaProdutos.get('/', listarProdutos);
+
+rotaProdutos.delete('/:id', validarProdutoId, deletarProduto);
 
 module.exports = rotaProdutos;
