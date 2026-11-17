@@ -11,8 +11,9 @@ const rotaPedidos = require('./rota.pedidos');
 const rotas = Router();
 
 rotas.use(rotaCategorias);
-rotas.use(rotaUsuarios);
+rotas.use('/usuario', rotaUsuarios);
 rotas.use(rotaLogin);
+
 rotas.use(autenticarAcesso);
 rotas.use('/produto', rotaProdutos);
 rotas.use('/cliente', rotaClientes);

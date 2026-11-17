@@ -22,8 +22,8 @@ rotaClientes.post(
 
 rotaClientes.put(
   '/:id',
-  validarCorpoRequisicao(esquemaCliente),
   validarClienteId,
+  validarCorpoRequisicao(esquemaCliente),
   editarCliente
 );
 

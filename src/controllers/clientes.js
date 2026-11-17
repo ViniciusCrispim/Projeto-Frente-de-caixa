@@ -9,7 +9,6 @@ const {
 
 const cadastroCliente = async (req, res) => {
   const corpoCliente = req.body;
-  console.log(corpoCliente);
   try {
     const clienteCadastrado = await cadastrarCliente(corpoCliente);
 
@@ -18,7 +17,7 @@ const cadastroCliente = async (req, res) => {
         .status(500)
         .json({ mensagem: 'Erro ao cadastrar, repita a operação' });
     }
-    return res.json(clienteCadastrado[0]);
+    return res.status(201).json(clienteCadastrado[0]);
   } catch (error) {
     return res.status(500).json({ mensagem: error.message });
   }
@@ -26,9 +25,9 @@ const cadastroCliente = async (req, res) => {
 
 const editarCliente = async (req, res) => {
   const corpoCliente = req.body;
-  const id = req.params.id;
+  const { id } = req.params;
   try {
-    const clienteSistema = await validarIdCliente(id);
+    const clienteSistema = req.cliente || (await validarIdCliente(id));
     if (corpoCliente.email !== clienteSistema.email) {
       if (await validarEmailCliente(corpoCliente.email)) {
         return res
@@ -45,7 +44,7 @@ const editarCliente = async (req, res) => {
     }
 
     const clienteAtualizado = await atualizarCliente(corpoCliente, id);
-    return res.json(clienteAtualizado);
+    return res.json(clienteAtualizado[0]);
   } catch (error) {
     return res.status(500).json({ mensagem: error.message });
   }
@@ -63,7 +62,7 @@ const listarClientes = async (req, res) => {
 const detalharCliente = async (req, res) => {
   const { id } = req.params;
   try {
-    const clienteDetalhado = await validarIdCliente(id);
+    const clienteDetalhado = req.cliente || (await validarIdCliente(id));
     return res.json(clienteDetalhado);
   } catch (error) {
     return res.status(500).json({ mensagem: error.message });

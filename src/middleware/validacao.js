@@ -37,7 +37,7 @@ const validarIdCategoria = async (req, res, next) => {
   try {
     if (!(await verificarIdCategoria(categoria_id))) {
       return res
-        .status(400)
+        .status(404)
         .json({ mensagem: 'O id da categoria informada não existe' });
     }
     next();
@@ -49,11 +49,13 @@ const validarIdCategoria = async (req, res, next) => {
 const validarProdutoId = async (req, res, next) => {
   const { id } = req.params;
   try {
-    if (!(await buscarProdutoPorId(id))) {
+    const produto = await buscarProdutoPorId(id);
+    if (!produto) {
       return res
         .status(404)
         .json({ mensagem: 'Não existe produto com o ID informado' });
     }
+    req.produto = produto;
     next();
   } catch (error) {
     return res.status(500).json({ mensagem: error.message });
@@ -83,14 +85,16 @@ const validarEmailCpfCliente = async (req, res, next) => {
 const validarClienteId = async (req, res, next) => {
   const { id } = req.params;
   try {
-    if (!(await validarIdCliente(id))) {
+    const cliente = await validarIdCliente(id);
+    if (!cliente) {
       return res
-        .status(400)
+        .status(404)
         .json({ mensagem: 'Não existe cliente com o Id informado' });
     }
+    req.cliente = cliente;
     next();
   } catch (error) {
-    res.status(500).json({ mensagem: error.message });
+    return res.status(500).json({ mensagem: error.message });
   }
 };
 

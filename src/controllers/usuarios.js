@@ -11,7 +11,7 @@ const cadastroUsuario = async (req, res) => {
     const usuarioCadastrado = await cadastrarUsuario(nome, email, senha);
     return res.status(201).json(usuarioCadastrado[0]);
   } catch (error) {
-    return res.status(500).json(error.message);
+    return res.status(500).json({ mensagem: error.message });
   }
 };
 
@@ -19,7 +19,7 @@ const detalharUsuario = async (req, res) => {
   try {
     return res.json(req.usuarioLogado);
   } catch (error) {
-    return res.status(400).json({ mensagem: error.message });
+    return res.status(500).json({ mensagem: error.message });
   }
 };
 
@@ -29,7 +29,7 @@ const atualizacaoUsuario = async (req, res) => {
   try {
     const usuarioCadastrado = await buscarUsuarioPorId(id);
     if (!usuarioCadastrado) {
-      return res.status(404).json({ mensagem: 'Usuario não encontrado' });
+      return res.status(404).json({ mensagem: 'Usuário não encontrado' });
     }
 
     if (
@@ -37,7 +37,7 @@ const atualizacaoUsuario = async (req, res) => {
       (await buscarUsuarioPorEmail(email))
     ) {
       return res
-        .status(403)
+        .status(400)
         .json({ mensagem: 'O email informado já está em uso' });
     }
 

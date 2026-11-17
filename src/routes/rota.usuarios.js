@@ -15,10 +15,13 @@ rotaUsuarios.post(
   validarEmailCadastrado,
   ctrl.cadastroUsuario
 );
-rotaUsuarios.get(autenticarAcesso, ctrl.detalharUsuario);
+
+rotaUsuarios.get('/', autenticarAcesso, ctrl.detalharUsuario);
+
 rotaUsuarios.put(
-  validarCorpoRequisicao(esquemaUsuario),
+  '/',
   autenticarAcesso,
+  validarCorpoRequisicao(esquemaUsuario),
   ctrl.atualizacaoUsuario
 );
 

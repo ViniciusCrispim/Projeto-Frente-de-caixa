@@ -2,27 +2,39 @@ const jwt = require('jsonwebtoken');
 const { buscarUsuarioPorId } = require('../repository/usuarios');
 
 const autenticarAcesso = async (req, res, next) => {
-  if (!req.headers.authorization) {
-    return res.status(401).json({ mensagem: 'Usuário não autenticado' });
+  const { authorization } = req.headers;
+
+  if (!authorization) {
+    return res.status(401).json({
+      mensagem:
+        'Para acessar este recurso um token de autenticação válido deve ser enviado.',
+    });
   }
 
   try {
-    const token = req.headers.authorization.split(' ')[1];
-    const conteudoToken = jwt.verify(token, process.env.JWT_PASS);
-
-    if (!(await buscarUsuarioPorId(conteudoToken.id))) {
-      return res.status(404).json({ mensagem: 'Usuário não encontrado' });
+    const token = authorization.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({
+        mensagem:
+          'Para acessar este recurso um token de autenticação válido deve ser enviado.',
+      });
     }
 
-    req.usuarioLogado = {
-      id: conteudoToken.id,
-      nome: conteudoToken.nome,
-      email: conteudoToken.email,
-    };
+    const conteudoToken = jwt.verify(token, process.env.JWT_PASS);
+    const usuario = await buscarUsuarioPorId(conteudoToken.id);
+
+    if (!usuario) {
+      return res.status(401).json({ mensagem: 'Usuário não encontrado' });
+    }
+
+    req.usuarioLogado = usuario;
 
     next();
   } catch (error) {
-    return res.status(400).json({ mensagem: error.message });
+    return res.status(401).json({
+      mensagem:
+        'Para acessar este recurso um token de autenticação válido deve ser enviado.',
+    });
   }
 };
 
