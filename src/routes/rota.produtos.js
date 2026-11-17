@@ -11,11 +11,14 @@ const {
   validarCorpoRequisicao,
   validarIdCategoria,
 } = require('../middleware/validacao');
+const upload = require('../middleware/multer');
 const esquemaProduto = require('../schemas/produtos');
+
 const rotaProdutos = Router();
 
 rotaProdutos.post(
   '/',
+  upload.single('produto_imagem'),
   validarCorpoRequisicao(esquemaProduto),
   validarIdCategoria,
   cadastroProduto
@@ -24,6 +27,7 @@ rotaProdutos.post(
 rotaProdutos.put(
   '/:id',
   validarProdutoId,
+  upload.single('produto_imagem'),
   validarCorpoRequisicao(esquemaProduto),
   validarIdCategoria,
   atualizarProduto
